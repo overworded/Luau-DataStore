@@ -1,6 +1,7 @@
 local DataStoreService = game:GetService("DataStoreService")
 
 local UtilityModule = require(script.Parent.Utility)
+local TypesModule = require(script.Parent.Types)
 
 --- // Types \\ ---
 
@@ -101,6 +102,10 @@ function Client:Load(): boolean
 	self.LastSave = tick()
 
 	return Success
+end
+
+function Client:Destroy() -- TODO: this is for something i dont remember what
+	-- do whatever, just here so it doesnt break for now
 end
 
 --- // Data Store \\ ---

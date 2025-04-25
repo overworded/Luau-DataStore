@@ -52,7 +52,7 @@ Client.Data -- the table of data for the client
 -- its as simple as that!
 ```
 
-#### Removing a DataStoreClients from a DataStore:
+#### Removing a DataStoreClient from a DataStore:
 ```luau
 DataStore:DestroyClient("CLIENT KEY")
 

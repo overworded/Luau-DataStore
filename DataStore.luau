@@ -17,8 +17,6 @@ export type DataStore = {
 	Name: string,
 	Clients: {[number | string]: DataStoreClient},
 	Template: {any}?,
-	AutoSaveInterval: number,
-	AutoSaveClientInterval: number,
 }
 
 local Client = {}
@@ -64,14 +62,14 @@ function Client:Save(): boolean
 	)
 
 	if not Success then
-		warn(`Failed to load save data for {self.Key}. Reason: {Response}`)
+		warn(`[DataStore: {self.DataStore.Name}] - Failed to save data for {self.Key}. Reason: {Response}`)
 		return Success, Response
 	end
 	
 	self.DataString = NewDataString
 	self.LastSave = tick()
 
-	print(`Saved data for {self.Key}:`, self.Data)
+	print(`[DataStore: {self.DataStore.Name}] - Successfuly saved data for {self.Key}.`)
 
 	return Success
 end
@@ -84,18 +82,19 @@ function Client:Load(): boolean
 	)
 
 	if not Success then
-		warn(`Failed to load data for {self.Key}. Reason: {Response}`)
+		warn(`[DataStore: {self.DataStore.Name}] - Failed to load data for key '{self.Key}'. Reason: {Response}`)
 		return Success
 	end
 
 	if Response ~= nil then
 		self:Set(UtilityModule.Parse(Response))
 		self.DataString = Response
+		print(`[DataStore: {self.DataStore.Name}] - Successfuly loaded data for key '{self.Key}'.`)
 	else
 		if self.DataStore.Template then
 			self.Data = table.clone(self.DataStore.Template)
 			self.DataString = UtilityModule.Stringify(self.Data)
-			print(`Applied default data for {self.Key}.`)
+			print(`[DataStore: {self.DataStore.Name}] - Applied default data for key '{self.Key}'.`)
 		end
 	end
 
@@ -104,8 +103,8 @@ function Client:Load(): boolean
 	return Success
 end
 
-function Client:Destroy() -- TODO: this is for something i dont remember what
-	-- do whatever, just here so it doesnt break for now
+function Client:Destroy()
+	-- do whatever
 end
 
 --- // Data Store \\ ---
@@ -115,8 +114,6 @@ function DataStore.new(Name: string): DataStore
 
 	self.Name = Name
 	self.DataStore = DataStoreService:GetDataStore(Name)
-	self.AutoSaveInterval = 300 -- how many seconds between starting auto save loops
-	self.AutoSaveClientInterval = 250 -- how many seconds between auto saving a client
 	self.Clients = {}
 	self.Template = nil
 
@@ -130,7 +127,7 @@ end
 -- creates a client object and puts it into the datastores clients dictionary
 function DataStore:CreateClient(Key: string | number): DataStoreClient
 	if self.Clients[Key] then
-		warn("Key already exists in loaded DataStore.")
+		warn(`[DataStore: {self.Name}] - Failed to create client, key '{self.Key}' already exists in DataStore.`)
 		return
 	end
 
@@ -148,7 +145,7 @@ function DataStore:DestroyClient(Key: string | number)
 	local TargetClient = self.Clients[Key]
 
 	if not TargetClient then
-		warn("Client key not found in loaded DataStore.")
+		warn(`[DataStore: {self.Name}] - Failed to destroy client, key '{self.Key}' not found in DataStore.`)
 		return
 	end
 

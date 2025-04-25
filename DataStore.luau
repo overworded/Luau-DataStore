@@ -1,7 +1,6 @@
 local DataStoreService = game:GetService("DataStoreService")
 
 local UtilityModule = require(script.Parent.Utility)
-local TypesModule = require(script.Parent.Types)
 
 --- // Types \\ ---
 

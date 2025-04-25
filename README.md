@@ -6,6 +6,7 @@ DataStores in Luau for Roblox that can handle more values than strings and numbe
 
  - Saves values such as, but not limited to, Numbers, Strings, Vector3s, Color3s, CFrames, and so on..
  - Doesnt save data if there is no change detected.
+ - Template support.
 
 ## Usage / Examples
 

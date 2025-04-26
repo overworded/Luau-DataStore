@@ -1,11 +1,11 @@
 
 # 💾 Luau DataStore 💾
 
-DataStores in Luau for Roblox that can handle more values than strings and numbers!
+DataStores in Luau for Roblox that can handle more values than just Strings and Numbers!
 ## Features
 
  - Saves values such as, but not limited to, Numbers, Strings, Vector3s, Color3s, CFrames, and so on..
- - Doesnt save data if there is no change detected.
+ - Doesn't save data if there is no change detected.
  - Template support.
 
 ## Usage / Examples
@@ -20,7 +20,7 @@ local DataStore = DataStoreClass.new("DATA STORE NAME")
 #### Setting a DataStore template:
 ```luau
 -- if no data is found for the key in the DataStore
--- when loaded, it will use the template instead!
+-- when loaded, it will use the template instead.
 
 local Template = {
   StringValue = "This is a string!";
@@ -50,7 +50,7 @@ Client:Save()
 #### Accessing a DataStoreClients Data:
 ```luau
 Client.Data -- the table of data for the client
--- its as simple as that!
+-- it's as simple as that!
 ```
 
 #### Removing a DataStoreClient from a DataStore:
@@ -64,7 +64,7 @@ DataStore:DestroyClient("CLIENT KEY")
 #### Example:
 ```luau
 -- we are going to simulate saving player data,
--- since thats what most people use DataStores for.
+-- since that's what most people use DataStores for.
 
 local Players = game:GetService("Players")
 
@@ -85,7 +85,7 @@ local function OnPlayerAdded(Player: Player)
 
 	Client:Load()
 
-	-- if you remember, the data wont save if
+	-- if you remember, the data won't save if
 	-- we dont make any changes to it
 	-- so lets do that here
 
@@ -109,9 +109,9 @@ Players.PlayerRemoving:Connect(OnPlayerRemoving)
 
 #### Why is my data not saving?
 
-Robloxs DataStore service could be down, or your data hasnt changed from the template values.
+Robloxs DataStore service could be down, or your data hasn't changed from the template values.
 
-#### Why cant I save this value?
+#### Why can't I save this value?
 
 You should be able to save any value you add to the Types list, double check if your desired value is there.
 

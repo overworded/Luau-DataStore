@@ -8,10 +8,16 @@ local Module = {}
 local function ToValue(String: string)
 	local Table = string.split(String, ":")
 	if #Table < 2 then return String end
-	return Types[Table[1]].new(table.unpack(string.split(Table[2], ",")))
+
+	local Values = {}
+	for Number in Table[2]:gmatch("-?%d+%.?%d*") do
+		table.insert(Values, tonumber(Number))
+	end
+
+	return Types[Table[1]].new(table.unpack(Values))
 end
 
-local function ToString(Value: number | string | Color3 | Vector3 | CFrame)
+local function ToString(Value: number | string | any)
 	local Type = typeof(Value)
 	if Type == "number" or Type == "string" then return Value end
 	return `{Type}:{tostring(Value)}`

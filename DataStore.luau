@@ -36,7 +36,7 @@ function Client.new(Key: string | number): DataStoreClient
 
 	self.Data = nil
 	self.DataString = nil
-	self.LastSave = nil
+	self.LastSaveTick = nil
 
 	return self
 end
@@ -44,12 +44,16 @@ end
 function Client:Set(Data: {any})
 	self.Data = Data
 	self.DataString = UtilityModule.Stringify(Data)
-	self.LastSave = tick()
+	self.LastSaveTick = tick()
 end
 
 function Client:Save(): boolean
+	if not self.Data or #self.Data == 0 then
+		return
+	end
+
 	local NewDataString = UtilityModule.Stringify(self.Data)
-	
+
 	if NewDataString == self.DataString then -- data not changed
 		return true
 	end
@@ -67,7 +71,7 @@ function Client:Save(): boolean
 	end
 	
 	self.DataString = NewDataString
-	self.LastSave = tick()
+	self.LastSaveTick = tick()
 
 	print(`[DataStore: {self.DataStore.Name}] - Successfuly saved data for {self.Key}.`)
 
@@ -98,9 +102,13 @@ function Client:Load(): boolean
 		end
 	end
 
-	self.LastSave = tick()
+	self.LastSaveTick = tick()
 
 	return Success
+end
+
+function Client:Wait()
+	repeat task.wait() until self.Data
 end
 
 function Client:Destroy()
@@ -138,6 +146,10 @@ function DataStore:CreateClient(Key: string | number): DataStoreClient
 	self.Clients[Key] = NewClient
 
 	return NewClient
+end
+
+function DataStore:GetClient(Key: string | number)
+	return self.Clients[Key]
 end
 
 -- removes client from datastores client dictionary and call destroy method on the client

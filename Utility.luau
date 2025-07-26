@@ -18,8 +18,9 @@ local function ToValue(String: string)
 end
 
 local function ToString(Value: number | string | any)
-	local Type = typeof(Value)
-	if Type == "number" or Type == "string" then return Value end
+	local Type = type(Value)
+	if Type == "number" or Type == "string" or Type == "boolean" then return Value end
+	if Type == "userdata" then return nil end
 	return `{Type}:{tostring(Value)}`
 end
 
